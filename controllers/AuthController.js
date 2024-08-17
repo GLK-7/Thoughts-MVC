@@ -7,6 +7,38 @@ module.exports = class AuthController {
     res.render("auth/login");
   }
 
+  static async loginPost(req, res) {
+    const { email, password } = req.body;
+
+    //find user
+    const user = await User.findOne({ where: { email: email } });
+
+    if (!user) {
+      req.flash("message", "Usuário não encontrado!"); // Mensagem de erro via flash
+      res.render("auth/login");
+
+      return;
+    }
+
+    //check if passwords match
+    const passwordMatch = bcrypt.compareSync(password, user.password);
+
+    if (!passwordMatch) {
+      req.flash("message", "Senha incorreta!"); // Mensagem de erro via flash
+      res.render("auth/login");
+
+      return;
+    }
+
+    //inicia e salva a sessão. Em seguida, redireciona o usuário
+    req.session.userid = user.id;
+    req.flash("message", "Login realizado com sucesso!"); // Mensagem de sucesso
+
+    req.session.save(() => {
+      return res.status(201).redirect("/"); // Redireciona para a página principal
+    });
+  }
+
   // Renderiza a página de registro
   static register(req, res) {
     res.render("auth/register");
@@ -63,5 +95,10 @@ module.exports = class AuthController {
       );
       return res.status(500).render("auth/register"); // Retorna a página de registro com status 500
     }
+  }
+
+  static logout(req, res) {
+    req.session.destroy();
+    res.redirect("/login");
   }
 };
