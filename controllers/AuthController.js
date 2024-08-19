@@ -35,7 +35,8 @@ module.exports = class AuthController {
     req.flash("message", "Login realizado com sucesso!"); // Mensagem de sucesso
 
     req.session.save(() => {
-      return res.status(201).redirect("/"); // Redireciona para a página principal
+      console.log(`Usuário autenticado: ${req.session.userid}`);
+      return res.redirect("/"); // Redireciona para a página principal
     });
   }
 
