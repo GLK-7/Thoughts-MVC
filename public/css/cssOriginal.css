@@ -1,4 +1,3 @@
-/* GLOBAL */
 * {
   font-family: Helvetica, sans-serif;
   margin: 0;
@@ -54,7 +53,7 @@ body {
   padding: 1em;
   color: #004085;
   background-color: #cce5ff;
-  border: 1px solid #b8daff;
+  border: 1px soli d#b8daff;
   border-radius: 5px;
   text-align: center;
   margin: 0 auto 2em;
@@ -62,6 +61,7 @@ body {
 }
 
 .container {
+  /* min-height: 60vh; */
   height: 85%;
   padding: 2em;
 }
@@ -101,22 +101,30 @@ body {
 .form-control textarea {
   padding: 7px;
   border-radius: 3px;
-  border: 2px solid #f6982d;
+  border: 1px solid #f6982d;
 }
 
 form input[type="submit"],
 .btn {
-  background-color: #444;
+  background-color: transparent;
   color: #f6982d;
   border: 2px solid #f6982d;
   padding: 0.5em 1.3em;
   margin-bottom: 1em;
   font-size: 1em;
   font-weight: bold;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
   transition: 0.5s;
+}
+.btn-line{
+  display: flex
+}
+.ph-fill{
+  font-size:30px;
+  color: #f6982d;
+  width: 100px;
 }
 
 form input[type="submit"]:hover,
@@ -145,64 +153,29 @@ form input[type="submit"]:hover,
   list-style: none;
 }
 
-.dashboard .item-container {
-  position: relative;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  background-color: #333; /* Cor mais clara que o fundo */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-.dashboard .item-container form{
-  background-color: #333;
-}
-
-.dashboard .item-container::after {
-  content: "";
-  position: absolute;
-  bottom: -15px;
-  left: 20px;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 15px solid #333;
-}
-
 .dashboard li {
   padding: 12px;
+  border-bottom: 1px solid #333333;
+  border-top: 1px solid #333333;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #333;
-  background-color:#333;
-  border-radius:10px;
 }
 
 .dashboard .label {
   font-weight: bold;
-  color: #f8b057;
+  color: #ffdfb8;
   margin-right: 2em;
-  background-color: #333;
 }
 
 .dashboard .actions {
   display: flex;
-  background-color: #333;
 }
 
 .dashboard .actions .btn {
-  background-color: #444;
-  color: #f6982d;
-  border: 2px solid #f6982d;
-  border-radius: 4px;
-  margin: 0 0.5em;
-  padding: 0.5em 1em;
-  transition: 0.5s;
-}
-
-.dashboard .actions .btn:hover {
-  background-color: #f6982d;
   color: #fff;
+  border-color: #fff;
+  margin: 0 0.5em;
 }
 
 /* CREATE / EDIT FORM */

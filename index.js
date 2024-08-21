@@ -5,6 +5,7 @@ const FileStore = require("session-file-store")(session);
 const flash = require("express-flash");
 const conn = require("./db/conn");
 const app = express();
+require("dotenv/config");
 
 // Models
 const Thought = require("./models/Thought");
@@ -25,7 +26,7 @@ app.set("view engine", "handlebars");
 app.use(
   express.urlencoded({
     extended: true,
-  })
+  }),
 );
 app.use(express.json());
 
@@ -46,7 +47,7 @@ app.use(
       expires: new Date(Date.now() + 360000),
       httpOnly: true,
     },
-  })
+  }),
 );
 
 // Configurando as flash messages
@@ -58,7 +59,6 @@ app.use(express.static("public"));
 // Salvando a sessão no res
 app.use((req, res, next) => {
   // console.log(req.session)
-  console.log(req.session.userid);
 
   if (req.session.userid) {
     res.locals.session = req.session;
