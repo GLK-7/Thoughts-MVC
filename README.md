@@ -1,7 +1,5 @@
 # Thoughts
 
----
-
 **Thoughts** é uma aplicação simples em **Node.js** que permite aos usuários autenticados compartilhar, editar e excluir seus pensamentos. Além disso, você pode buscar por título e ordenar os pensamentos por data/hora.
 
 ## Funcionalidades
