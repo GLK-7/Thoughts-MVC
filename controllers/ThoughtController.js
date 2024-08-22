@@ -1,35 +1,81 @@
 const Thought = require("../models/Thought");
 const User = require("../models/User");
 
+const { Op } = require("sequelize");
+
 module.exports = class ToughtController {
   static async showThoughts(req, res) {
+    let search = "";
+
+    if (req.query.search) {
+      search = req.query.search;
+    }
+
+    let order = "DESC";
+
+    if (req.query.order === "old") {
+      order = "ASC";
+    } else {
+      order = "DESC";
+    }
+
     const thoughtsData = await Thought.findAll({
-      include: User
-    })
+      include: User,
+      where: {
+        title: { [Op.like]: `%${search}%` },
+      },
+      order: [["createdAt", order]],
+    });
     const thoughts = thoughtsData.map((result) => result.get({ plain: true }));
-    
-    res.render("thoughts/home", { thoughts });
+
+    let thoughtsQty = thoughts.length;
+    let textResultSearchSingleFound = "";
+    let textResultSearchSingle = "";
+
+    if (thoughtsQty === 0) {
+      thoughtsQty = false;
+      textResultSearch = "";
+    }
+
+    if (thoughtsQty > 1) {
+      textResultSearchSingleFound = "Foram encontrados";
+      textResultSearchSingle = "Pensamentos";
+    } else {
+      textResultSearchSingleFound = "Foi encontrado";
+      textResultSearchSingle = "Pensamento";
+    }
+
+    res.render("thoughts/home", {
+      thoughts,
+      search,
+      thoughtsQty,
+      textResultSearchSingleFound,
+      textResultSearchSingle,
+    });
   }
 
   static async dashboard(req, res) {
-
     const UserId = req.session.userid;
-    const user = await User.findOne({ where: { id: UserId }, include: Thought, plain: true});
+    const user = await User.findOne({
+      where: { id: UserId },
+      include: Thought,
+      plain: true,
+    });
 
     // check if user exists
-    if(!user){
+    if (!user) {
       res.rediret("/login");
     }
-    // pegar somente os dados limpos  
-    const thoughts = user.Thoughts.map((result) => result.dataValues)
+    // pegar somente os dados limpos
+    const thoughts = user.Thoughts.map((result) => result.dataValues);
 
-    let emptyThoughts = false
+    let emptyThoughts = false;
 
-    if(thoughts.length === 0){
-      emptyThoughts = true
+    if (thoughts.length === 0) {
+      emptyThoughts = true;
     }
-  
-    res.render("thoughts/dashboard", {thoughts, emptyThoughts});
+
+    res.render("thoughts/dashboard", { thoughts, emptyThoughts });
   }
 
   static createThought(req, res) {
@@ -40,55 +86,55 @@ module.exports = class ToughtController {
     const thought = {
       title: req.body.title,
       UserId: req.session.userid,
-    }
-    try{
-      await Thought.create(thought)
-      req.flash("message", "Pensamento criado com sucesso!")
+    };
+    try {
+      await Thought.create(thought);
+      req.flash("message", "Pensamento criado com sucesso!");
 
-      req.session.save(()=> {
+      req.session.save(() => {
         res.redirect("/thoughts/dashboard");
-      })
-    }catch(e){
-      console.log('Ocorreu um erro: ' + e)
-    }    
+      });
+    } catch (e) {
+      console.log("Ocorreu um erro: " + e);
+    }
   }
 
-  static async removeThought(req, res){
-    const id = req.body.id
+  static async removeThought(req, res) {
+    const id = req.body.id;
     const UserId = req.session.userid;
-    try{
-      await Thought.destroy({where: {id: id}})
-      req.flash("message", "Pensamento removido com sucesso!")
+    try {
+      await Thought.destroy({ where: { id: id } });
+      req.flash("message", "Pensamento removido com sucesso!");
 
-      req.session.save(()=> {
+      req.session.save(() => {
         res.redirect("/thoughts/dashboard");
-      })
-    }catch(e){
-      console.log('Ocorreu um erro: ' + e)
+      });
+    } catch (e) {
+      console.log("Ocorreu um erro: " + e);
     }
   }
 
-  static async updateThought(req, res){
-    const id = req.params.id
-    const thought = await Thought.findOne({where: {id: id}, raw: true})
+  static async updateThought(req, res) {
+    const id = req.params.id;
+    const thought = await Thought.findOne({ where: { id: id }, raw: true });
 
-    res.render("thoughts/edit", {thought})
+    res.render("thoughts/edit", { thought });
   }
 
-  static async updateThoughtSave(req, res){
-    const id = req.body.id
-    
+  static async updateThoughtSave(req, res) {
+    const id = req.body.id;
+
     const thought = {
-      title: req.body.title
-    }
-    try{
-      await Thought.update(thought, {where: {id: id}})
-      req.flash("message", "Pensamento atualizado com sucesso!")
-      req.session.save(()=> {
+      title: req.body.title,
+    };
+    try {
+      await Thought.update(thought, { where: { id: id } });
+      req.flash("message", "Pensamento atualizado com sucesso!");
+      req.session.save(() => {
         res.redirect("/thoughts/dashboard");
-      })
-    }catch(e){
-      console.log('Ocorreu um erro: ' + e)
+      });
+    } catch (e) {
+      console.log("Ocorreu um erro: " + e);
     }
   }
 };

@@ -317,6 +317,11 @@ figcaption,
 span {
   background-color: #333;
 }
+.captionDate,
+.captionSpan {
+  background-color: #333;
+  font-size: 14px;
+}
 .toughts-container blockquote {
   font-style: italic;
   font-size: 2em;

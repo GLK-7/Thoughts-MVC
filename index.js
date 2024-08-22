@@ -19,14 +19,30 @@ const authRoutes = require("./routes/authRoutes");
 const ThoughtController = require("./controllers/ThoughtController"); // Para acessar a barra da aplicação
 
 // Definindo a Engine como Handlebars
-app.engine("handlebars", exphbs.engine());
+// Crie uma instância de exphbs com o helper registrado
+const hbs = exphbs.create({
+  helpers: {
+    formatDate: function (date, format) {
+      return new Date(date).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    },
+  },
+});
+
+// Configure o engine do Handlebars com a instância personalizada
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 // Receber resposta do body
 app.use(
   express.urlencoded({
     extended: true,
-  }),
+  })
 );
 app.use(express.json());
 
@@ -47,7 +63,7 @@ app.use(
       expires: new Date(Date.now() + 360000),
       httpOnly: true,
     },
-  }),
+  })
 );
 
 // Configurando as flash messages

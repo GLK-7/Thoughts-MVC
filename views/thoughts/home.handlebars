@@ -1,11 +1,22 @@
 <div class="home-header">
-  <h1>Todos os Pensamentos</h1>
+  {{#if search}}
+    <h1>Você está buscando por: <span>{{search}}</span></h1>
+    {{#if thoughts}}
+      <p>{{textResultSearchSingleFound}}
+        <span>{{thoughtsQty}} {{textResultSearchSingle}}.</span></p>
+    {{else}}
+      <p>Nenhum pensamento fpo encontrado para o termo
+        <span>{{search}}</span></p>
+    {{/if}}
+  {{else}}
+    <h1>Conheça alguns dos nossos <span>Pensamentos</span></h1>
+  {{/if}}
   <form action="/" method="GET">
     <input type="text" name="search" placeholder="Está buscando por algo?" />
     <input type="submit" class="btn" value="Buscar" />
   </form>
   <div class="order-container">
-    <span>Ordenadar por:</span>
+    <span>Ordenadar por data/hora:</span>
     <form action="/" method="GET">
       <input type="hidden" name="search" value="{{this.search}}" />
       <input type="hidden" name="order" value="new" />
@@ -25,8 +36,13 @@
           <li>
             <span class="label">{{this.title}}</span>
             <figure>
+              <figcaption class="captionDate">Criado:
+                <span class="captionSpan">{{formatDate
+                    this.createdAt
+                  }}</span></figcaption>
               <figcaption>por <span>{{this.User.name}}</span></figcaption>
             </figure>
+
           </li>
         </div>
       {{/each}}
