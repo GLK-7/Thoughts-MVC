@@ -31,14 +31,14 @@
 2. Instale as dependências:
 
    ```bash
-      cd thoughts
-      npm install
+   cd thoughts
+   npm install
    ```
 3. Configure o banco de dados no arquivo .env.
 
 4. Inicie a aplicação:
    ```bash
-      mpm start
+   mpm start
    ```
 
    [![GitHub](https://img.shields.io/badge/GitHub-Gabriel_Lino-181717?style=for-the-badge&logo=github)](https://github.com/GLK-7)
