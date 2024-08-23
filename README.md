@@ -1,6 +1,7 @@
 # Thoughts
 
-![Demonstração do Thoughts](./public/img/demo.png)
+
+<img src="./public/img/demo.png" alt="Demonstração do Thoughts" style="border-radius: 10px"/>
 
 
 **Thoughts** é uma aplicação simples em **Node.js** que permite aos usuários autenticados compartilhar, editar e excluir seus pensamentos. Além disso, você pode buscar por título e ordenar os pensamentos por data/hora.
