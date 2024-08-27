@@ -7,6 +7,8 @@ const conn = require("./db/conn");
 const app = express();
 require("dotenv/config");
 
+const port = process.env.PORT || 3001;
+
 // Models
 const Thought = require("./models/Thought");
 const User = require("./models/User");
@@ -92,7 +94,7 @@ app.get("/", ThoughtController.showThoughts);
 conn
   .sync()
   .then(() => {
-    app.listen(3000);
+    app.listen(port);
     console.log("App rodando!");
   })
   .catch((e) => console.log(e));
